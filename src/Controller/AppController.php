@@ -12,6 +12,6 @@ class AppController extends AbstractController
     public function index(): Response
     {
         // Retourne le contenu de la vue 'app/index'
-        return $this->render('index.html.twig');
+        return $this->render('app/index.html.twig');
     }
 }
