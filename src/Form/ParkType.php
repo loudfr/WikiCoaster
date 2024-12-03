@@ -2,26 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Coaster;
+use App\Entity\Park;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Park;
 
-class CoasterType extends AbstractType
+class ParkType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
-            ->add('maxSpeed')
-            ->add('length')
-            ->add('maxHeight')
-            ->add('operating')
-            ->add('park', EntityType::class, [
-                'class' => Park::class,
-            ])
+            ->add('country')
+            ->add('openingYear')
             
         ;
     }
@@ -29,8 +22,7 @@ class CoasterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Coaster::class,
+            'data_class' => Park::class,
         ]);
     }
-
 }
