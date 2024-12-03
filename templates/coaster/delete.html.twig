@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<h1>Supprimer un coaster</h1>    
+{{ form_start(coasterForm) }}
+    {{form_widget(coasterForm)}}
+    {# button:submit.btn.btn-primary #}
+    <form method="post" action="{{ path('coaster_delete', {'id': coaster.id}) }}">
+        <h1>Supprimer {{ coaster.name }}</h1>
+
+        <p>Êtes-vous sûr de vouloir supprimer ce coaster ?</p>
+
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ coaster.id) }}">
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+    </form>
+
+{{ form_end(coasterForm) }}
+{% endblock %}
