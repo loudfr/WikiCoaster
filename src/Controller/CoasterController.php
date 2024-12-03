@@ -97,21 +97,11 @@ class CoasterController extends AbstractController
         return new Response($coaster->getName());
     }
 
-    //récupérer un nom à partir d'un id 
+    //récupérer un nom à partir d'un id et modifier 
     #[Route('/coaster/{id}/delete')]
     public function delete(Coaster $coaster, Request $request, EntityManagerInterface $entityManager): Response
     {
-
-        $form = $this->createForm(CoasterType::class, $coaster);
-        $form->handleRequest($request);
-
-        // ap
-        if ($form->isSubmitted() && $form->isValid()) {
-            //maj bd
-            $entityManager->flush();
-            return $this->redirectToRoute('app_coaster_index');
-        }
-
+        
         if ($this->isCsrfTokenValid(
             'delete'.$coaster->getId(),
             $request->request->get('_token')
@@ -120,13 +110,11 @@ class CoasterController extends AbstractController
             $entityManager->flush();
         
             return $this->redirectToRoute('app_coaster_index');
-        }        
-
+        }
+        
         return $this->render('coaster/delete.html.twig', [
-            'coasterForm' => $form,
-        ]);  
-
-        return new Response($coaster->getName());
+            'coaster' => $coaster,
+        ]);
     }
-
+        
 }
