@@ -28,7 +28,7 @@ class Park
     private ?self $Park = null;
 
     /**
-     * @var Collection<int, self>
+     * @var Collection<int, Coaster>
      */
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'Park')]
     private Collection $parks;
@@ -120,4 +120,12 @@ class Park
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    
+
 }

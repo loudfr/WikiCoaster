@@ -6,8 +6,13 @@
 
 {% for coaster in coasters %}
 <div class="card my-2">
+  
     <div class="card-body">
+    <!-- mettre à 2 bouts opposés -->
+    <div class="d-flex justify-content-between">
         <div class="lead">{{ coaster.name }}</div>
+        <div class="mx-2">{{ coaster.park.name }}</div>
+    </div>
         <div class="infos d-flex">
             <div class="mx-2">
                 Hauteur {{ coaster.maxHeight }}m
@@ -18,6 +23,7 @@
             <div class="mx-2">
                 Vitesse max. {{ coaster.maxSpeed }}km/h
             </div>
+            
         </div>
         <a href="{{ path('app_coaster_edit', {'id': coaster.id}) }}" class="btn btn-primary">Modifier</a>
         <a href="{{ path('app_coaster_delete', {'id': coaster.id}) }}" class="btn btn-danger">Supprimer</a>

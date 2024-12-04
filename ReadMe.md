@@ -1,8 +1,41 @@
-## debut
-
+## commandes si retard
+# utile
+lancer serveur
 symfony serve
 
-## créer bd
+stopper
+symfony server:stop
+
+construire les assets
+npm run dev
+
+créer une entité
+symfony console make:entity NAME
+
+migration
+symfony console make:migration
+symfony console doctrine:migrations:migrate
+
+formulaire
+symfony console make:form
+
+crud
+symfony console make:crud
+
+# bd 
+avec docker :
+symfony console make:docker:database
+docker-compose up -d database
+
+sans: 
+symfony console doctrine:database:create
+(DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db") dans .env
+
+
+# faire migration quand seul dans bd 
+symfony console doctrine:schema:update --force
+
+# créer bd
 name
 
 80
@@ -17,13 +50,13 @@ yes
 operating
 boolean
 
-## créer formulaire 
+# créer formulaire 
 
 Symfony console make:form
 CoasterType
 Coaster
 
-## à ajouter dans template/coast/add.html.twig
+# à ajouter dans template/coast/add.html.twig
 
 {% extends "base.html.twig" %}
 
@@ -35,5 +68,14 @@ Coaster
 {{ form_end(coasterForm) }}
 {% endblock %}
 
-# ensuite
-<h1>Liste des coasters</h1>
+
+# scss
+backgroung-color: rgba(var(--bs-tertiary-bg-rgb),0.6)
+
+# erreur non converti en string (dans le chemin donné App/Entity/...)
+public function __toString(): string
+{
+    return $this->name;
+}
+
+

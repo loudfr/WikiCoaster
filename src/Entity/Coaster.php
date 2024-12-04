@@ -29,6 +29,13 @@ class Coaster
     #[ORM\Column]
     private ?bool $operating = null;
 
+    #[ORM\ManyToOne(inversedBy: 'coasters')]
+    private ?Park $park = null;
+
+    #[ORM\ManyToOne(inversedBy: 'coasters')]
+    private ?Category $Categories = null;
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,4 +100,33 @@ class Coaster
 
         return $this;
     }
+
+    public function getPark(): ?Park
+    {
+        return $this->park;
+    }
+
+    public function setPark(?Park $park): static
+    {
+        $this->park = $park;
+
+        return $this;
+    }
+
+    public function getCategories(): ?Category
+    {
+        return $this->Categories;
+    }
+
+    public function setCategories(?Category $Categories): static
+    {
+        $this->Categories = $Categories;
+
+        return $this;
+    }
+
+   
+
+    
+
 }
