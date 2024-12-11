@@ -27,6 +27,7 @@ class CoasterRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.park', 'p')
+            ->addSelect('p, cat, c')
             ->leftJoin('c.categories', 'cat')
             ->setMaxResults($count)
             ->setFirstResult($begin)

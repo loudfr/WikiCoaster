@@ -17,6 +17,9 @@ migration
 ```symfony console make:migration```
 ```symfony console doctrine:migrations:migrate```
 
+faire migration quand seul dans bd 
+```symfony console doctrine:schema:update --force```
+
 formulaire
 ```symfony console make:form```
 
@@ -31,10 +34,6 @@ avec docker :
 sans: 
 ```symfony console doctrine:database:create```
 (```DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"```) dans .env
-
-
-# faire migration quand seul dans bd 
-```symfony console doctrine:schema:update --force```
 
 # créer bd
 name
