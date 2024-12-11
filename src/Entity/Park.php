@@ -24,18 +24,20 @@ class Park
     #[ORM\Column(nullable: true)]
     private ?int $openingYear = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'parks')]
-    private ?self $Park = null;
-
     /**
      * @var Collection<int, Coaster>
      */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'Park')]
-    private Collection $parks;
+    #[ORM\OneToMany(targetEntity: Coaster::class, mappedBy: 'park')]
+    private Collection $coasters;
 
     public function __construct()
     {
-        $this->parks = new ArrayCollection();
+        $this->coasters = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -79,53 +81,33 @@ class Park
         return $this;
     }
 
-    public function getPark(): ?self
-    {
-        return $this->Park;
-    }
-
-    public function setPark(?self $Park): static
-    {
-        $this->Park = $Park;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, self>
+     * @return Collection<int, Coaster>
      */
-    public function getParks(): Collection
+    public function getCoasters(): Collection
     {
-        return $this->parks;
+        return $this->coasters;
     }
 
-    public function addPark(self $park): static
+    public function addCoaster(Coaster $coaster): static
     {
-        if (!$this->parks->contains($park)) {
-            $this->parks->add($park);
-            $park->setPark($this);
+        if (!$this->coasters->contains($coaster)) {
+            $this->coasters->add($coaster);
+            $coaster->setPark($this);
         }
 
         return $this;
     }
 
-    public function removePark(self $park): static
+    public function removeCoaster(Coaster $coaster): static
     {
-        if ($this->parks->removeElement($park)) {
+        if ($this->coasters->removeElement($coaster)) {
             // set the owning side to null (unless already changed)
-            if ($park->getPark() === $this) {
-                $park->setPark(null);
+            if ($coaster->getPark() === $this) {
+                $coaster->setPark(null);
             }
         }
 
         return $this;
     }
-
-    public function __toString(): string
-    {
-        return $this->name;
-    }
-
-    
-
 }

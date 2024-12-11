@@ -17,6 +17,38 @@ use Doctrine\ORM\EntityManager;
 
 class CoasterController extends AbstractController
 {
+    #[Route('/coaster/')]
+    public function index(
+        CoasterRepository $coasterRepository, 
+        ParkRepository $parkRepository, 
+        CategoryRepository $categoryRepository, 
+        Request $request
+    ): Response
+    {
+        $parkId = (int) $request->query->get('park', '');
+        $categoryId = (int) $request->query->get('category', '');
+        $search = $request->query->get('search', '');
+
+        $itemCount = 10;
+        $page = max($request->get('p', 1),1);
+        $begin = ($page - 1) * $itemCount;
+
+
+        //$coasters = $coasterRepository->findAll();
+        $coasters = $coasterRepository->findFiltered($parkId, $categoryId, $search, $itemCount, $begin);
+
+        dump($coasters);
+
+        $pageCount = max(ceil($coasters->count() / $itemCount), 1);
+        
+        return $this->render('coaster/index.html.twig', [
+            'coasters' => $coasters,
+            'parks' => $parkRepository->findAll(),
+            'categories' => $categoryRepository->findAll(),
+            'pageCount' => $pageCount,
+        ]);
+    }
+
     #[Route(path: '/coaster/add')]
     public function add(EntityManagerInterface $entityManager, Request $request): Response
     {
@@ -46,7 +78,6 @@ class CoasterController extends AbstractController
 
             return $this->redirectToRoute('app_coaster_index');
         }
-
         
         // ajoute la nouvelle entité dans le manager Doctrine
         //$em->persist($coaster);
@@ -61,24 +92,6 @@ class CoasterController extends AbstractController
             'coasterForm' => $form,
         ]);  
         
-    }
-
-    #[Route('/coaster/')]
-    public function index(CoasterRepository $coasterRepository, ParkRepository $parkRepository, CategoryRepository $categoryRepository, Request $request): Response
-    {
-        $parkId = $request->query->get('park', '');
-        $categoryId = $request->query->get('category', '');
-        $search = $request->query->get('search', '');
-        //$coasters = $coasterRepository->findAll();
-        $coasters = $coasterRepository->findByFilters($parkId, $categoryId, $search);
-
-        //dump($coasters);
-        
-        return $this->render('coaster/index.html.twig', [
-            'coasters' => $coasters,
-            'parks' => $parkRepository->findAll(),
-            'categories' => $categoryRepository->findAll(),
-        ]);
     }
 
     //récupérer un nom à partir d'un id et modifier
