@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Coaster;
 use App\Form\CoasterType;
+use App\Repository\CategoryRepository;
 use App\Repository\CoasterRepository;
+use App\Repository\ParkRepository;
 use Doctrine\ORM\EntityManager;
 
 class CoasterController extends AbstractController
@@ -62,14 +64,20 @@ class CoasterController extends AbstractController
     }
 
     #[Route('/coaster/')]
-    public function index(CoasterRepository $coasterRepository): Response
+    public function index(CoasterRepository $coasterRepository, ParkRepository $parkRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
-        $coasters = $coasterRepository->findAll();
+        $parkId = $request->query->get('park', '');
+        $categoryId = $request->query->get('category', '');
+        $search = $request->query->get('search', '');
+        //$coasters = $coasterRepository->findAll();
+        $coasters = $coasterRepository->findByFilters($parkId, $categoryId, $search);
 
         //dump($coasters);
         
         return $this->render('coaster/index.html.twig', [
             'coasters' => $coasters,
+            'parks' => $parkRepository->findAll(),
+            'categories' => $categoryRepository->findAll(),
         ]);
     }
 

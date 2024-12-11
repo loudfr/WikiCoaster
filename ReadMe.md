@@ -1,39 +1,40 @@
 ## commandes si retard
 # utile
 lancer serveur
-symfony serve
+```symfony serve```
 
 stopper
-symfony server:stop
+
+```symfony server:stop```
 
 construire les assets
-npm run dev
+```npm run dev```
 
 créer une entité
-symfony console make:entity NAME
+```symfony console make:entity NAME```
 
 migration
-symfony console make:migration
-symfony console doctrine:migrations:migrate
+```symfony console make:migration```
+```symfony console doctrine:migrations:migrate```
 
 formulaire
-symfony console make:form
+```symfony console make:form```
 
 crud
-symfony console make:crud
+```symfony console make:crud```
 
 # bd 
 avec docker :
-symfony console make:docker:database
-docker-compose up -d database
+```symfony console make:docker:database```
+```docker-compose up -d database```
 
 sans: 
-symfony console doctrine:database:create
-(DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db") dans .env
+```symfony console doctrine:database:create```
+(```DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"```) dans .env
 
 
 # faire migration quand seul dans bd 
-symfony console doctrine:schema:update --force
+```symfony console doctrine:schema:update --force```
 
 # créer bd
 name
@@ -52,7 +53,7 @@ boolean
 
 # créer formulaire 
 
-Symfony console make:form
+```Symfony console make:form```
 CoasterType
 Coaster
 
@@ -68,7 +69,6 @@ Coaster
 {{ form_end(coasterForm) }}
 {% endblock %}
 
-
 # scss
 backgroung-color: rgba(var(--bs-tertiary-bg-rgb),0.6)
 
@@ -78,4 +78,19 @@ public function __toString(): string
     return $this->name;
 }
 
+# entity categorie
+categories
+ManyToMany
+Category
 
+# sites
+bouton select: https://slimselectjs.com/
+arreire plan: https://www.gradientmagic.com/
+icon: https://fontawesome.com/
+icons: https://icons.getbootstrap.com/
+
+
+# grouper par pays
+'group_by' => function(Park $entity) {
+    return $entity->getCountry();
+},
