@@ -40,6 +40,9 @@ class Coaster
      */
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'coasters')]
     private Collection $categories;
+
+    #[ORM\ManyToOne(inversedBy: 'coasters')]
+    private ?User $author = null;
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -140,6 +143,18 @@ class Coaster
     public function removeCategory(Category $category): static
     {
         $this->categories->removeElement($category);
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
+
         return $this;
     }
 

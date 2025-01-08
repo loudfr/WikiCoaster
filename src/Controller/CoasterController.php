@@ -14,6 +14,8 @@ use App\Repository\CategoryRepository;
 use App\Repository\CoasterRepository;
 use App\Repository\ParkRepository;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Security\Voter\CoasterVoter;
 
 class CoasterController extends AbstractController
 {
@@ -50,12 +52,13 @@ class CoasterController extends AbstractController
     }
 
     #[Route(path: '/coaster/add')]
+    #[IsGranted('ROLE_USER')]
     public function add(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $entity = new Coaster();
-        $form = $this->createForm(CoasterType::class, $entity);
+        $user = $this->getUser();
 
         $coaster = new Coaster();
+        $coaster->setAuthor($user);
         /*$coaster->setName('Blue Fire')
             ->setmaxHeight(38)
             ->setMaxSpeed(100)
@@ -99,6 +102,7 @@ class CoasterController extends AbstractController
     public function edit(Coaster $coaster, Request $request, EntityManagerInterface $entityManager): Response
     {
 
+        $this->denyAccessUnlessGranted(CoasterVoter::EDIT, $coaster);
         $form = $this->createForm(CoasterType::class, $coaster);
         $form->handleRequest($request);
 

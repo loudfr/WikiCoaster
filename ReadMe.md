@@ -26,6 +26,11 @@ formulaire
 crud
 ```symfony console make:crud```
 
+# pb de migrations 
+```symfony console doctrine:migrations:list```
+```symfony console doctrine:migrations:version --add DoctrineMigrations\Version---```
+```symfony console doctrine:migrations:migrate```
+
 # bd 
 avec docker :
 ```symfony console make:docker:database```
@@ -93,3 +98,6 @@ icons: https://icons.getbootstrap.com/
 'group_by' => function(Park $entity) {
     return $entity->getCountry();
 },
+
+# tp4
+roles: ["ROLE_ADMIN"]

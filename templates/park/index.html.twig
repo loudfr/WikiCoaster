@@ -23,8 +23,10 @@
                 <td>{{ park.openingYear }}</td>
                 <td>{{ park.coasters|length}} </td>
                 <td>
-                    <a href="{{ path('app_park_show', {'id': park.id}) }}" class="btn btn-outline-secondary">show</a>
-                    <a href="{{ path('app_park_edit', {'id': park.id}) }}" class="btn btn-outline-secondary">edit</a>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ path('app_park_show', {'id': park.id}) }}" class="btn btn-outline-secondary">show</a>
+                        <a href="{{ path('app_park_edit', {'id': park.id}) }}" class="btn btn-outline-secondary">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

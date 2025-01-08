@@ -52,7 +52,7 @@ class CoasterRepository extends ServiceEntityRepository
             ;
         }
 
-
+        // calculer le nombre de pages
         return new Paginator($qb->getQuery());
 
     }
