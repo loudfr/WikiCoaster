@@ -5,11 +5,18 @@ namespace App\Security\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class CoasterVoter extends Voter
 {
     public const EDIT = 'POST_EDIT';
     public const VIEW = 'POST_VIEW';
+
+    public function __construct(
+        private readonly AuthorizationCheckerInterface $authorizationChecker
+    ) {
+    }
+      
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -31,6 +38,10 @@ final class CoasterVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
+                if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+                    return true;
+                }
+                return $subject->getAuthor() === $user;
                 // logic to determine if the user can EDIT
                 // return true or false
                 break;
