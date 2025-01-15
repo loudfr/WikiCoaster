@@ -3,7 +3,11 @@
 {% block body %}
 <h1>Liste des coasters</h1>
     <div class="d-flex justify-content-between">
+        {% if is_granted('ROLE_USER') %}
         <a href="{{ path('app_coaster_add') }}" class="btn btn-secondary">Ajouter un coaster</a>
+        {% else %}
+            Connectez-vous pour ajouter un coaster
+        {% endif %}
 
 
         <form action="" method="get" class="d-flex justify-content-between">

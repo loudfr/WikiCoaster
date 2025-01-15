@@ -12,9 +12,14 @@ use App\Entity\Park;
 use App\Entity\Category;
 use Doctrine\ORM\QueryBuilder;
 use App\Utils\Countries;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CoasterType extends AbstractType
 {
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -40,10 +45,15 @@ class CoasterType extends AbstractType
                     return $er->createQueryBuilder('c')
                         ->orderBy('c.name', 'ASC');
                 },
-            ])
+            ]);
             
+            if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+                $builder->add('published', options: [
+                    'label' => 'Publier la fiche',
+                ]);
+            }
             
-        ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

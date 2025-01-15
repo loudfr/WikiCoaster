@@ -1,10 +1,10 @@
 ## commandes si retard
 # utile
 lancer serveur
+```scomposer update```
 ```symfony serve```
 
 stopper
-
 ```symfony server:stop```
 
 construire les assets
@@ -101,3 +101,5 @@ icons: https://icons.getbootstrap.com/
 
 # tp4
 roles: ["ROLE_ADMIN"]
+
+-> voir coastertype __construct
