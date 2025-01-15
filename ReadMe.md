@@ -99,7 +99,8 @@ icons: https://icons.getbootstrap.com/
     return $entity->getCountry();
 },
 
-# tp4
-roles: ["ROLE_ADMIN"]
+# tp5 A REFAIRE
 
--> voir coastertype __construct
+CoasterRepository il faut mettre security mais tjr souligné en rouge ? (même si pas souligné ne fonctionne pas)
+
+

@@ -7,15 +7,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+
 final class CoasterVoter extends Voter
 {
-    public const EDIT = 'POST_EDIT';
-    public const VIEW = 'POST_VIEW';
+    public const EDIT = 'EDIT';
+    public const VIEW = 'VIEW';
 
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
+    ) {}
       
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -52,6 +52,11 @@ final class CoasterVoter extends Voter
                 break;
         }
 
-        return false;
+        //return false;
+        return match($attribute) {
+            self::EDIT => $subject->getAuthor() === $user || $this->authorizationChecker->isGranted('ROLE_ADMIN'),
+            self::VIEW => true,
+            default => false,
+        };  
     }
 }

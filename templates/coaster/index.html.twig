@@ -34,7 +34,7 @@
     </div>
 
 {% for coaster in coasters %}
-<div class="card my-2">
+<div class="card my-2" {% if not coaster.published %}bg-danger-subtle{% endif %}>
   
     <div class="card-body">
     <!-- mettre à 2 bouts opposés -->
@@ -61,8 +61,11 @@
             </div>
             
         </div>
+    <dic class="d-flex justify-content-end">
+    {% if is_granted('EDIT', coaster) %}
         <a href="{{ path('app_coaster_edit', {'id': coaster.id}) }}" class="btn btn-primary">Modifier</a>
         <a href="{{ path('app_coaster_delete', {'id': coaster.id}) }}" class="btn btn-danger">Supprimer</a>
+    {% endif %}
     </div>
 </div>
 {% endfor %}

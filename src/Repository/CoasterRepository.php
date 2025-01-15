@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Coaster;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
@@ -12,7 +13,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class CoasterRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly Security $security)
     {
         parent::__construct($registry, Coaster::class);
     }
@@ -50,6 +53,11 @@ class CoasterRepository extends ServiceEntityRepository
             $qb->andWhere($qb->expr()->like('c.name', ':search'))
                 ->setParameter('search', "%$search%")
             ;
+        }
+
+        if(!$this->security->isGranted('ROLE_ADMIN')) {
+            $qb->andWhere('c.published = true OR c.author = :user')
+                ->setParameter('author', $this->security->getUser());
         }
 
         // calculer le nombre de pages
