@@ -36,7 +36,7 @@ final class CoasterVoter extends Voter
         }
 
         // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
+        /*switch ($attribute) {
             case self::EDIT:
                 if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
                     return true;
@@ -52,7 +52,7 @@ final class CoasterVoter extends Voter
                 break;
         }
 
-        //return false;
+        //return false;*/
         return match($attribute) {
             self::EDIT => $subject->getAuthor() === $user || $this->authorizationChecker->isGranted('ROLE_ADMIN'),
             self::VIEW => true,

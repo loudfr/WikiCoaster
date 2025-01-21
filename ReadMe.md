@@ -92,7 +92,7 @@ bouton select: https://slimselectjs.com/
 arreire plan: https://www.gradientmagic.com/
 icon: https://fontawesome.com/
 icons: https://icons.getbootstrap.com/
-
+desing pattern (ici strategy) : https://refactoring.guru/
 
 # grouper par pays
 'group_by' => function(Park $entity) {

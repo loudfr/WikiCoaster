@@ -16,6 +16,7 @@ use App\Repository\ParkRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Security\Voter\CoasterVoter;
+use App\Service\FileUploaderInterface;
 
 class CoasterController extends AbstractController
 {
@@ -53,7 +54,7 @@ class CoasterController extends AbstractController
 
     #[Route(path: '/coaster/add')]
     #[IsGranted('ROLE_USER')]
-    public function add(EntityManagerInterface $entityManager, Request $request): Response
+    public function add(EntityManagerInterface $entityManager, Request $request, FileUploaderInterface $fileUploader): Response
     {
         $user = $this->getUser();
 
@@ -73,6 +74,12 @@ class CoasterController extends AbstractController
 
         // ap
         if ($form->isSubmitted() && $form->isValid()) {
+            // données du champ "image"
+            $image = $form->get('image')->getData();
+            if ($image !== null) {
+                $path = $fileUploader->upload($image);
+                $coaster->setImageFileName($path);
+            }
             // ajoute la nouvelle entité dans le manager Doctrine
             $entityManager->persist($coaster);
 
@@ -99,7 +106,7 @@ class CoasterController extends AbstractController
 
     //récupérer un nom à partir d'un id et modifier
     #[Route('/coaster/{id}/edit')]
-    public function edit(Coaster $coaster, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Coaster $coaster, Request $request, EntityManagerInterface $entityManager, FileUploaderInterface $fileUploader): Response
     {
 
         $this->denyAccessUnlessGranted(CoasterVoter::EDIT, $coaster);
@@ -108,7 +115,16 @@ class CoasterController extends AbstractController
 
         // ap
         if ($form->isSubmitted() && $form->isValid()) {
-            
+        
+            // données champs image
+            $image = $form->get('image')->getData();
+            if ($image !== null) {
+                if ($coaster->getImageFileName()) {
+                    $fileUploader->remove($coaster->getImageFileName());
+                }
+                $path = $fileUploader->upload($image);
+                $coaster->setImageFileName($path);
+            }
             //maj bd
             $entityManager->flush();
 
